@@ -1,6 +1,6 @@
 package datasource
 
-import "awesomeProject/catalog"
+import "summerSQL/catalog"
 
 type IDataSource interface {
 	Schema() catalog.Schema

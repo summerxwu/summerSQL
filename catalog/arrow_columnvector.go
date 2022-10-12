@@ -49,6 +49,9 @@ func (a ArrowColumnVector) GetValue(index int) interface{} {
 func (a ArrowColumnVector) Size() int {
 	return a.Length
 }
+func NewArrowColumnVector(column *Column) *ArrowColumnVector {
+	return &ArrowColumnVector{ColumnSpec: *column, Length: 0, Value: nil}
+}
 
 func NewArrowColumnVectorBuiler(column *Column) *ColumnVectorBuilder {
 	switch column.Type.(type) {
