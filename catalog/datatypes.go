@@ -1,10 +1,16 @@
 package catalog
 
+import "errors"
+
 const (
 	IntTypeName    = "int"
 	StringTypeName = "string"
 	BoolTypeName   = "bool"
 	DoubleTypeName = "double"
+)
+
+var (
+	UnsupportedType = errors.New("unsupported type")
 )
 
 type IDataTypes interface {

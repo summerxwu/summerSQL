@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 import _ "github.com/apache/arrow/go/v6/arrow"
 import _ "github.com/apache/arrow/go/v6/arrow/array"
 

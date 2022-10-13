@@ -1,6 +1,7 @@
 package catalog
 
 import (
+	"fmt"
 	"github.com/apache/arrow/go/v6/arrow/array"
 	"github.com/apache/arrow/go/v6/arrow/decimal128"
 	"strconv"
@@ -10,6 +11,7 @@ type IColumnVector interface {
 	GetType() IDataTypes
 	GetValue(index int) interface{}
 	Size() int
+	Print() (string, error)
 }
 
 // ColumnVectorBuilder
@@ -82,4 +84,15 @@ func (b *BatchColumns) Filed(index int) IColumnVector {
 		return nil
 	}
 	return b.BatchVector[index]
+}
+
+func (b *BatchColumns) Print() {
+	for _, vector := range b.BatchVector {
+		str, err := vector.Print()
+		if err != nil {
+			fmt.Println(err.Error())
+			continue
+		}
+		fmt.Println(str)
+	}
 }

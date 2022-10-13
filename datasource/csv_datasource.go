@@ -22,6 +22,8 @@ func NewCSVDataSource(filename string, schema catalog.Schema, batchSize int) *CS
 	csvDataSource := CSVDataSource{
 		FileName:     filename,
 		csvSchema:    schema,
+		readerSchema: catalog.Schema{Fields: make([]*catalog.Column, 0)},
+		csvReader:    nil,
 		arrayBuilder: make(map[string]*catalog.ColumnVectorBuilder, 0),
 		LastOffset:   0,
 		BatchSize:    batchSize,
@@ -30,7 +32,7 @@ func NewCSVDataSource(filename string, schema catalog.Schema, batchSize int) *CS
 		return nil
 	}
 	for _, column := range schema.Fields {
-		builder := catalog.NewArrowColumnVectorBuiler(column)
+		builder := catalog.NewArrowColumnVectorBuilder(column)
 		if builder != nil {
 			csvDataSource.arrayBuilder[column.Name] = builder
 		} else {
@@ -50,7 +52,7 @@ func (C *CSVDataSource) Schema() catalog.Schema {
 }
 
 func (C *CSVDataSource) Scan(projections catalog.Schema) (catalog.BatchColumns, error) {
-	return C.CreateAndFillBatch(projections)
+	return C.createAndFillBatch(projections)
 }
 
 func (C *CSVDataSource) createBatchFromBuilders() catalog.BatchColumns {
@@ -85,7 +87,7 @@ func (C *CSVDataSource) dealRawDataByBuilders(rawData []string) error {
 	return nil
 }
 
-func (C *CSVDataSource) CreateAndFillBatch(projections catalog.Schema) (catalog.BatchColumns, error) {
+func (C *CSVDataSource) createAndFillBatch(projections catalog.Schema) (catalog.BatchColumns, error) {
 	var err error
 	C.readerSchema = projections
 
@@ -93,10 +95,6 @@ func (C *CSVDataSource) CreateAndFillBatch(projections catalog.Schema) (catalog.
 	if batchCounter <= 0 {
 		err = errors.New("datasource batch size is not positive")
 		goto error
-	}
-
-	for _, pc := range projections.Fields {
-		C.arrayBuilder[pc.Name] = catalog.NewArrowColumnVectorBuiler(pc)
 	}
 
 	for {

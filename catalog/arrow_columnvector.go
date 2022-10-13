@@ -49,31 +49,54 @@ func (a ArrowColumnVector) GetValue(index int) interface{} {
 func (a ArrowColumnVector) Size() int {
 	return a.Length
 }
+
+func (a ArrowColumnVector) Print() (string, error) {
+	switch v := a.Value.(type) {
+	case *array.String:
+		{
+			return v.String(), nil
+		}
+	case *array.Int64:
+		{
+			return v.String(), nil
+		}
+	case *array.Boolean:
+		{
+			return v.String(), nil
+		}
+	case *array.Decimal128:
+		{
+			return v.String(), nil
+		}
+	}
+	return "", UnsupportedType
+}
+
 func NewArrowColumnVector(column *Column) *ArrowColumnVector {
 	return &ArrowColumnVector{ColumnSpec: *column, Length: 0, Value: nil}
 }
 
-func NewArrowColumnVectorBuiler(column *Column) *ColumnVectorBuilder {
+func NewArrowColumnVectorBuilder(column *Column) *ColumnVectorBuilder {
 	switch column.Type.(type) {
-	case IntType:
+	case *IntType:
 		{
 			return &ColumnVectorBuilder{
 				Builder: array.NewBuilder(memory.NewGoAllocator(), &arrow.Int64Type{}),
 			}
 		}
-	case StringType:
+	case *StringType:
 		{
 			return &ColumnVectorBuilder{
 				Builder: array.NewBuilder(memory.NewGoAllocator(), &arrow.StringType{}),
 			}
 		}
-	case DoubleType:
+	case *DoubleType:
 		{
 			return &ColumnVectorBuilder{
 				Builder: array.NewBuilder(memory.NewGoAllocator(), &arrow.Decimal128Type{}),
 			}
 		}
-	case BoolType:
+	case *BoolType:
 		{
 			return &ColumnVectorBuilder{
 				Builder: array.NewBuilder(memory.NewGoAllocator(), &arrow.BooleanType{}),
