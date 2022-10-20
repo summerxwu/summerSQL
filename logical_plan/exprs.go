@@ -1,4 +1,4 @@
-package logicplan
+package logical_plan
 
 import (
 	"fmt"
@@ -26,7 +26,7 @@ type LiteralStringExpr struct {
 	Literal string
 }
 
-func (l *LiteralStringExpr) ReturnType(input ILogicPlan) catalog.IDataTypes {
+func (l *LiteralStringExpr) ReturnType(ILogicPlan) catalog.IDataTypes {
 	return catalog.NewArrowStringType()
 
 }
@@ -38,7 +38,7 @@ type LiteralIntExpr struct {
 	Literal int64
 }
 
-func (l *LiteralIntExpr) ReturnType(input ILogicPlan) catalog.IDataTypes {
+func (l *LiteralIntExpr) ReturnType(ILogicPlan) catalog.IDataTypes {
 	return catalog.NewArrowIntType()
 
 }
@@ -50,7 +50,7 @@ type LiteralDoubleExpr struct {
 	Literal float64
 }
 
-func (l *LiteralDoubleExpr) ReturnType(input ILogicPlan) catalog.IDataTypes {
+func (l *LiteralDoubleExpr) ReturnType(ILogicPlan) catalog.IDataTypes {
 	return catalog.NewArrowDoubleType()
 }
 
@@ -62,7 +62,7 @@ type LiteralBooleanExpr struct {
 	Literal bool
 }
 
-func (l *LiteralBooleanExpr) ReturnType(input ILogicPlan) catalog.IDataTypes {
+func (l *LiteralBooleanExpr) ReturnType(ILogicPlan) catalog.IDataTypes {
 	return catalog.NewArrowBoolType()
 }
 
@@ -82,16 +82,38 @@ type BooleanBinaryExpr struct {
 	BinaryExpr
 }
 
-func (b *BooleanBinaryExpr) ReturnType(input ILogicPlan) catalog.IDataTypes {
+func NewBooleanBinaryExpr(name string, operator string, l ILogicExpr, r ILogicExpr) *BooleanBinaryExpr {
+	return &BooleanBinaryExpr{
+		BinaryExpr: BinaryExpr{
+			Name:     name,
+			Operator: operator,
+			L:        l,
+			R:        r,
+		},
+	}
+}
+
+func (b *BooleanBinaryExpr) ReturnType(ILogicPlan) catalog.IDataTypes {
 	return catalog.NewArrowBoolType()
 }
 
 func (b *BooleanBinaryExpr) ToString() string {
-	return fmt.Sprintf("BooleanBinary#Expr: %s %s %s", b.L, b.Operator, b.R)
+	return fmt.Sprintf("BooleanBinary#Expr: %s [%s] %s", b.L.ToString(), b.Operator, b.R.ToString())
 }
 
 type MathBinaryExpr struct {
 	BinaryExpr
+}
+
+func NewMathBinaryExpr(name string, operator string, l ILogicExpr, r ILogicExpr) *MathBinaryExpr {
+	return &MathBinaryExpr{
+		BinaryExpr: BinaryExpr{
+			Name:     name,
+			Operator: operator,
+			L:        l,
+			R:        r,
+		},
+	}
 }
 
 func (m *MathBinaryExpr) ReturnType(input ILogicPlan) catalog.IDataTypes {
@@ -99,15 +121,27 @@ func (m *MathBinaryExpr) ReturnType(input ILogicPlan) catalog.IDataTypes {
 }
 
 func (m *MathBinaryExpr) ToString() string {
-	return fmt.Sprintf("MathBinary#Expr: %s %s %s", m.L, m.Operator, m.R)
+	return fmt.Sprintf("MathBinary#Expr: %s %s %s", m.L.ToString(), m.Operator, m.R.ToString())
 }
 
 type Eq struct {
 	BooleanBinaryExpr
 }
+
+func NewEq(l ILogicExpr, r ILogicExpr) *Eq {
+	be := NewBooleanBinaryExpr("Eq", "=", l, r)
+	return &Eq{*be}
+}
+
 type Neq struct {
 	BooleanBinaryExpr
 }
+
+func NewNeq(l ILogicExpr, r ILogicExpr) *Neq {
+	be := NewBooleanBinaryExpr("Neq", "!=", l, r)
+	return &Neq{*be}
+}
+
 type Gt struct {
 	BooleanBinaryExpr
 }
@@ -173,6 +207,6 @@ type Count struct {
 	AggregateExpr
 }
 
-func (c *Count) ReturnType(input ILogicPlan) catalog.IDataTypes {
+func (c *Count) ReturnType(ILogicPlan) catalog.IDataTypes {
 	return catalog.NewArrowIntType()
 }

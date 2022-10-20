@@ -1,4 +1,4 @@
-package logicplan
+package logical_plan
 
 import (
 	"bytes"

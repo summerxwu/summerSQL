@@ -55,6 +55,10 @@ func (C *CSVDataSource) Scan(projections catalog.Schema) (catalog.BatchColumns, 
 	return C.createAndFillBatch(projections)
 }
 
+func (C *CSVDataSource) Info() string {
+	return C.FileName
+}
+
 func (C *CSVDataSource) createBatchFromBuilders() catalog.BatchColumns {
 
 	bColumns := catalog.BatchColumns{
