@@ -80,6 +80,7 @@ func (l *LiteralDoublePhysicalExpr) Evaluate(input catalog.BatchColumns) catalog
 	column := catalog.NewColumn(catalog.NewArrowDoubleType(), "None", input.RowCount())
 	retVal := catalog.NewArrowColumnVector(column)
 	builder := catalog.NewArrowColumnVectorBuilder(column)
+	// TODO: real size of the retVal.Value is 1
 	_ = builder.Append(l.rawValue)
 	retVal.Value = builder.Builder.NewArray()
 	return retVal
@@ -87,4 +88,31 @@ func (l *LiteralDoublePhysicalExpr) Evaluate(input catalog.BatchColumns) catalog
 
 func (l *LiteralDoublePhysicalExpr) ToString() string {
 	return fmt.Sprintf("LiteralDouble#PhysicalExpr: %s", l.rawValue)
+}
+
+type EvalBinaryFunc = func(l catalog.IColumnVector, r catalog.IColumnVector) catalog.IColumnVector
+
+type BinaryPhysicalExpr struct {
+	L        IPhysicalExpr
+	R        IPhysicalExpr
+	Operator string
+	EvalLR   EvalBinaryFunc
+}
+
+func (b *BinaryPhysicalExpr) Evaluate(input catalog.BatchColumns) catalog.IColumnVector {
+	lr := b.L.Evaluate(input)
+	rr := b.R.Evaluate(input)
+	if lr.Size() != rr.Size() {
+		panic("operands size different")
+	}
+	if lr.GetType().Name() != rr.GetType().Name() {
+		panic("operands return type different not support")
+	}
+	if b.EvalLR == nil {
+		panic("unspecified EvalFunction")
+	}
+	return b.EvalLR(lr, rr)
+}
+func (b *BinaryPhysicalExpr) ToString() string {
+	return fmt.Sprintf("Binary#PhysicalExpr: %s %s %s", b.L.ToString(), b.Operator, b.R.ToString())
 }
