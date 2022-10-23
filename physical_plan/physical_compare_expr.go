@@ -10,7 +10,7 @@ func EqEvalBinaryFunc(l catalog.IColumnVector, r catalog.IColumnVector) catalog.
 		}
 	default:
 		{
-			panic("not a supportted column vector type")
+			panic("not a supported column vector type")
 		}
 	}
 
