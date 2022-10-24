@@ -1,4 +1,4 @@
-package physical_plan
+package arrow_expr_impl
 
 import (
 	"summerSQL/catalog"
@@ -24,6 +24,7 @@ func ArrowEqBinaryFunc(l *catalog.ArrowColumnVector, r *catalog.ArrowColumnVecto
 	result.Value = builder.Builder.NewArray()
 	return result
 }
+
 func ArrowNeqBinaryFunc(l *catalog.ArrowColumnVector, r *catalog.ArrowColumnVector) *catalog.ArrowColumnVector {
 	var err error
 	column := catalog.NewColumn(catalog.NewArrowBoolType(), "None", 0)

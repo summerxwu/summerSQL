@@ -29,7 +29,9 @@ func (l *LiteralStrPhysicalExpr) Evaluate(input catalog.BatchColumns) catalog.IC
 	column := catalog.NewColumn(catalog.NewArrowStringType(), "None", input.RowCount())
 	retVal := catalog.NewArrowColumnVector(column)
 	builder := catalog.NewArrowColumnVectorBuilder(column)
-	_ = builder.Append(l.rawValue)
+	for i := 0; i < input.RowCount(); i++ {
+		_ = builder.Append(l.rawValue)
+	}
 	retVal.Value = builder.Builder.NewArray()
 	return retVal
 }
@@ -46,7 +48,9 @@ func (l *LiteralIntPhysicalExpr) Evaluate(input catalog.BatchColumns) catalog.IC
 	column := catalog.NewColumn(catalog.NewArrowIntType(), "None", input.RowCount())
 	retVal := catalog.NewArrowColumnVector(column)
 	builder := catalog.NewArrowColumnVectorBuilder(column)
-	_ = builder.Append(l.rawValue)
+	for i := 0; i < input.RowCount(); i++ {
+		_ = builder.Append(l.rawValue)
+	}
 	retVal.Value = builder.Builder.NewArray()
 	return retVal
 }
@@ -63,7 +67,9 @@ func (l *LiteralBooleanPhysicalExpr) Evaluate(input catalog.BatchColumns) catalo
 	column := catalog.NewColumn(catalog.NewArrowBoolType(), "None", input.RowCount())
 	retVal := catalog.NewArrowColumnVector(column)
 	builder := catalog.NewArrowColumnVectorBuilder(column)
-	_ = builder.Append(l.rawValue)
+	for i := 0; i < input.RowCount(); i++ {
+		_ = builder.Append(l.rawValue)
+	}
 	retVal.Value = builder.Builder.NewArray()
 	return retVal
 }
@@ -80,8 +86,9 @@ func (l *LiteralDoublePhysicalExpr) Evaluate(input catalog.BatchColumns) catalog
 	column := catalog.NewColumn(catalog.NewArrowDoubleType(), "None", input.RowCount())
 	retVal := catalog.NewArrowColumnVector(column)
 	builder := catalog.NewArrowColumnVectorBuilder(column)
-	// TODO: real size of the retVal.Value is 1
-	_ = builder.Append(l.rawValue)
+	for i := 0; i < input.RowCount(); i++ {
+		_ = builder.Append(l.rawValue)
+	}
 	retVal.Value = builder.Builder.NewArray()
 	return retVal
 }
