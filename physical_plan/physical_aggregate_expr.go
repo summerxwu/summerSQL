@@ -1,10 +1,8 @@
 package physical_plan
 
-import "summerSQL/catalog"
-
 type IAccumulator interface {
-	Accumulate(input catalog.IColumnVector)
-	FinalValue() catalog.IColumnVector
+	Accumulate(val interface{})
+	FinalValue() interface{}
 }
 type IAggregatePhysicalExpr interface {
 	InputIs() IPhysicalExpr

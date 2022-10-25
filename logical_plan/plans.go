@@ -133,7 +133,6 @@ func (a *Aggregate) Schema() *catalog.Schema {
 		sc.Fields = append(sc.Fields, catalog.NewColumn(expr.ReturnType(a.ChildNodes), "", i))
 	}
 	return &sc
-
 }
 
 func (a *Aggregate) Children() []ILogicPlan {

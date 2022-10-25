@@ -1,4 +1,4 @@
-package arrow_expr_impl
+package physical_plan
 
 import (
 	"github.com/apache/arrow/go/v6/arrow/array"

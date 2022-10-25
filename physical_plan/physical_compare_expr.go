@@ -2,7 +2,6 @@ package physical_plan
 
 import (
 	"summerSQL/catalog"
-	"summerSQL/physical_plan/arrow_expr_impl"
 )
 
 type EqBinaryPhysicalExpr struct {
@@ -23,7 +22,7 @@ func EqEvalBinaryFunc(l catalog.IColumnVector, r catalog.IColumnVector) catalog.
 	switch _ := l.(type) {
 	case *catalog.ArrowColumnVector:
 		{
-			return arrow_expr_impl.ArrowEqBinaryFunc(l.(*catalog.ArrowColumnVector), r.(*catalog.ArrowColumnVector))
+			return ArrowEqBinaryFunc(l.(*catalog.ArrowColumnVector), r.(*catalog.ArrowColumnVector))
 		}
 	default:
 		{
@@ -53,7 +52,7 @@ func NeqEvalBinaryFunc(l catalog.IColumnVector, r catalog.IColumnVector) catalog
 	switch _ := l.(type) {
 	case *catalog.ArrowColumnVector:
 		{
-			return arrow_expr_impl.ArrowNeqBinaryFunc(l.(*catalog.ArrowColumnVector), r.(*catalog.ArrowColumnVector))
+			return ArrowNeqBinaryFunc(l.(*catalog.ArrowColumnVector), r.(*catalog.ArrowColumnVector))
 		}
 	default:
 		{

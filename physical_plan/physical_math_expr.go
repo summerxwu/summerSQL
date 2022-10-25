@@ -2,7 +2,6 @@ package physical_plan
 
 import (
 	"summerSQL/catalog"
-	"summerSQL/physical_plan/arrow_expr_impl"
 )
 
 type AddPhysicalExpr struct {
@@ -24,7 +23,7 @@ func AddEvalBinaryFunc(l catalog.IColumnVector, r catalog.IColumnVector) catalog
 	switch _ := l.(type) {
 	case *catalog.ArrowColumnVector:
 		{
-			return arrow_expr_impl.ArrowAddEvalFunc(l, r)
+			return ArrowAddEvalFunc(l, r)
 		}
 	default:
 		panic("not a supported column vector type")

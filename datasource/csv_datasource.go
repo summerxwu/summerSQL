@@ -94,7 +94,6 @@ func (C *CSVDataSource) dealRawDataByBuilders(rawData []string) error {
 func (C *CSVDataSource) createAndFillBatch(projections catalog.Schema) (catalog.BatchColumns, error) {
 	var err error
 	C.readerSchema = projections
-
 	batchCounter := C.BatchSize
 	if batchCounter <= 0 {
 		err = errors.New("datasource batch size is not positive")
