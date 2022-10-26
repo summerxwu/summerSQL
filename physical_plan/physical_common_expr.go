@@ -25,6 +25,10 @@ type LiteralStrPhysicalExpr struct {
 	rawValue string
 }
 
+func NewLiteralStrPhysicalExpr(rawValue string) *LiteralStrPhysicalExpr {
+	return &LiteralStrPhysicalExpr{rawValue: rawValue}
+}
+
 func (l *LiteralStrPhysicalExpr) Evaluate(input catalog.BatchColumns) catalog.IColumnVector {
 	column := catalog.NewColumn(catalog.NewArrowStringType(), "None", input.RowCount())
 	retVal := catalog.NewArrowColumnVector(column)
@@ -42,6 +46,10 @@ func (l *LiteralStrPhysicalExpr) ToString() string {
 
 type LiteralIntPhysicalExpr struct {
 	rawValue string
+}
+
+func NewLiteralIntPhysicalExpr(rawValue string) *LiteralIntPhysicalExpr {
+	return &LiteralIntPhysicalExpr{rawValue: rawValue}
 }
 
 func (l *LiteralIntPhysicalExpr) Evaluate(input catalog.BatchColumns) catalog.IColumnVector {
@@ -63,6 +71,10 @@ type LiteralBooleanPhysicalExpr struct {
 	rawValue string
 }
 
+func NewLiteralBooleanPhysicalExpr(rawValue string) *LiteralBooleanPhysicalExpr {
+	return &LiteralBooleanPhysicalExpr{rawValue: rawValue}
+}
+
 func (l *LiteralBooleanPhysicalExpr) Evaluate(input catalog.BatchColumns) catalog.IColumnVector {
 	column := catalog.NewColumn(catalog.NewArrowBoolType(), "None", input.RowCount())
 	retVal := catalog.NewArrowColumnVector(column)
@@ -80,6 +92,10 @@ func (l *LiteralBooleanPhysicalExpr) ToString() string {
 
 type LiteralDoublePhysicalExpr struct {
 	rawValue string
+}
+
+func NewLiteralDoublePhysicalExpr(rawValue string) *LiteralDoublePhysicalExpr {
+	return &LiteralDoublePhysicalExpr{rawValue: rawValue}
 }
 
 func (l *LiteralDoublePhysicalExpr) Evaluate(input catalog.BatchColumns) catalog.IColumnVector {

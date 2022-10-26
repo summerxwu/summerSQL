@@ -34,6 +34,10 @@ type ArrowMaxExpr struct {
 	input IPhysicalExpr
 }
 
+func NewArrowMaxExpr(input IPhysicalExpr) *ArrowMaxExpr {
+	return &ArrowMaxExpr{input: input}
+}
+
 func (a *ArrowMaxExpr) InputIs() IPhysicalExpr {
 	return a.input
 }

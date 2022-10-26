@@ -3,42 +3,42 @@ package logical_plan
 import "summerSQL/catalog"
 
 type DataFrame struct {
-	logicPlan ILogicPlan
+	Final_logicPlan ILogicPlan
 }
 
 func NewDataFrame() *DataFrame {
-	return &DataFrame{logicPlan: nil}
+	return &DataFrame{Final_logicPlan: nil}
 }
 
 func (d *DataFrame) Projection(exprs []ILogicExpr) *DataFrame {
-	if d.logicPlan == nil {
+	if d.Final_logicPlan == nil {
 		panic("missing input logic plan for projection")
 	}
-	d.logicPlan = NewProjection(d.logicPlan, exprs)
+	d.Final_logicPlan = NewProjection(d.Final_logicPlan, exprs)
 
 	return d
 }
 
-func (d *DataFrame) Filter(exprs []ILogicExpr) *DataFrame {
-	if d.logicPlan == nil {
+func (d *DataFrame) Filter(exprs ILogicExpr) *DataFrame {
+	if d.Final_logicPlan == nil {
 		panic("missing input logic plan for Filter")
 	}
-	d.logicPlan = NewFilter(d.logicPlan, exprs)
+	d.Final_logicPlan = NewFilter(d.Final_logicPlan, exprs)
 	return d
 }
 
 func (d *DataFrame) Aggregate(aggrExprs []ILogicExpr, groupExprs []ILogicExpr) *DataFrame {
-	if d.logicPlan == nil {
+	if d.Final_logicPlan == nil {
 		panic("missing input logic plan for Aggregate")
 	}
-	d.logicPlan = NewAggregate(d.logicPlan, aggrExprs, groupExprs)
+	d.Final_logicPlan = NewAggregate(d.Final_logicPlan, aggrExprs, groupExprs)
 	return d
 }
 
 func (d *DataFrame) Schema() *catalog.Schema {
-	return d.logicPlan.Schema()
+	return d.Final_logicPlan.Schema()
 }
 
 func (d *DataFrame) LogicPlan() ILogicPlan {
-	return d.logicPlan
+	return d.Final_logicPlan
 }

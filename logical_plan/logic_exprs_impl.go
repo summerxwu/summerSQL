@@ -31,7 +31,7 @@ func (l *LiteralStringExpr) ReturnType(ILogicPlan) catalog.IDataTypes {
 
 }
 func (l *LiteralStringExpr) ToString() string {
-	return fmt.Sprintf("LitrlStr#Expr: %s", l.Literal)
+	return fmt.Sprintf("LitrlStr#Expr: \"%s\"", l.Literal)
 }
 
 type LiteralIntExpr struct {

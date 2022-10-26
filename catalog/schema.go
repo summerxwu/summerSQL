@@ -3,6 +3,7 @@ package catalog
 import (
 	"bytes"
 	"errors"
+	"strings"
 )
 
 type Schema struct {
@@ -31,6 +32,15 @@ func (s *Schema) Project(projection []string) (*Schema, error) {
 		}
 	}
 	return &ns, nil
+}
+
+func (s *Schema) GetIndexByColumnNameCi(name string) (int, error) {
+	for index, column := range s.Fields {
+		if strings.ToLower(name) == strings.ToLower(column.Name) {
+			return index, nil
+		}
+	}
+	return -1, ColumnDefineMissing
 }
 
 func (s *Schema) GetIndexByColumn(in *Column) (int, error) {

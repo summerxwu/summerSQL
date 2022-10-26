@@ -16,6 +16,6 @@ func (e ExecutionContext) CSVDataFrame(path string, schema catalog.Schema) (*Dat
 	if err != nil {
 		return nil, err
 	}
-	df := DataFrame{logicPlan: scan}
+	df := DataFrame{Final_logicPlan: scan}
 	return &df, nil
 }

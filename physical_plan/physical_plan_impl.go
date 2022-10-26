@@ -14,8 +14,8 @@ type ScanExec struct {
 	Projection *catalog.Schema
 }
 
-func NewScanExec(datasource datasource.CSVDataSource, projection *catalog.Schema) *ScanExec {
-	return &ScanExec{}
+func NewScanExec(datasource datasource.IDataSource, projection *catalog.Schema) *ScanExec {
+	return &ScanExec{DataSource: datasource, Projection: projection}
 }
 
 func (s *ScanExec) ToString() string {
@@ -114,7 +114,7 @@ func (f *FilterExec) ChildNodes() []IPhysicalPlan {
 }
 
 func (f *FilterExec) ToString() string {
-	return ""
+	return "FilterExec"
 }
 
 func (f *FilterExec) filterColumnVec(
@@ -267,5 +267,5 @@ func (a *AggregateExec) ChildNodes() []IPhysicalPlan {
 }
 
 func (a *AggregateExec) ToString() string {
-	return ""
+	return fmt.Sprintf("HashExec")
 }

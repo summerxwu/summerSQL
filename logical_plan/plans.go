@@ -88,10 +88,10 @@ func (p *Projection) ToString() string {
 
 type Filter struct {
 	ChildNodes ILogicPlan
-	Expr       []ILogicExpr
+	Expr       ILogicExpr
 }
 
-func NewFilter(childNodes ILogicPlan, expr []ILogicExpr) *Filter {
+func NewFilter(childNodes ILogicPlan, expr ILogicExpr) *Filter {
 	return &Filter{ChildNodes: childNodes, Expr: expr}
 }
 
@@ -108,10 +108,8 @@ func (f *Filter) Children() []ILogicPlan {
 func (f *Filter) ToString() string {
 	buff := bytes.Buffer{}
 	buff.WriteString("Filter: ")
-	for _, expr := range f.Expr {
-		buff.WriteString(expr.ToString())
-		buff.WriteString(" ")
-	}
+	buff.WriteString(f.Expr.ToString())
+	buff.WriteString(" ")
 	return buff.String()
 }
 
