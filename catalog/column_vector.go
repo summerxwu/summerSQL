@@ -20,7 +20,39 @@ type ColumnVectorBuilder struct {
 	Builder array.Builder
 }
 
-func (c *ColumnVectorBuilder) Append(val string) error {
+func (c *ColumnVectorBuilder) Append(val interface{}) error {
+	if val == nil {
+		c.Builder.AppendNull()
+		return nil
+	}
+	switch v := c.Builder.(type) {
+	case *array.StringBuilder:
+		{
+			v.Append(val.(string))
+			break
+		}
+	case *array.Int64Builder:
+		{
+			v.Append(val.(int64))
+			break
+		}
+	case *array.BooleanBuilder:
+		{
+			v.Append(val.(bool))
+			break
+		}
+	case *array.Decimal128Builder:
+		{
+			v.Append(val.(decimal128.Num))
+			break
+		}
+	default:
+		panic("datatype not supported")
+	}
+	return nil
+}
+
+func (c *ColumnVectorBuilder) StrAppend(val string) error {
 	if len(val) == 0 {
 		c.Builder.AppendNull()
 		return nil
@@ -28,6 +60,7 @@ func (c *ColumnVectorBuilder) Append(val string) error {
 	switch v := c.Builder.(type) {
 	case *array.StringBuilder:
 		{
+
 			v.Append(val)
 			break
 		}

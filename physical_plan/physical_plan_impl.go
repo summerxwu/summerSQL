@@ -234,15 +234,38 @@ func (a *AggregateExec) Execute() *catalog.BatchColumns {
 	}
 
 	// generate the final BatchColumn based on the rowAccumulatorMap
-	return nil
+	result := catalog.BatchColumns{
+		BatchSchema: a.schema,
+		BatchVector: make([]catalog.IColumnVector, 0),
+	}
+	builderVec := make([]*catalog.ColumnVectorBuilder, 0)
+	for i := 0; i < len(a.AggExpr); i++ {
+		columnDef := a.schema.Fields[i]
+		columnVec := catalog.NewArrowColumnVector(columnDef)
+		columnVec.Length = len(rowAccumulatorMap)
+		builder := catalog.NewArrowColumnVectorBuilder(columnDef)
+		builderVec = append(builderVec, builder)
+		result.BatchVector = append(result.BatchVector, columnVec)
+	}
+
+	for _, i2 := range rowAccumulatorMap {
+		for i3, accumulator := range i2 {
+			builder := builderVec[i3]
+			_ = builder.Append(accumulator.FinalValue())
+		}
+	}
+	for i := 0; i < len(builderVec); i++ {
+		result.BatchVector[i].(*catalog.ArrowColumnVector).Value = builderVec[i].Builder.NewArray()
+	}
+	return &result
 }
 
-func (a AggregateExec) ChildNodes() []IPhysicalPlan {
+func (a *AggregateExec) ChildNodes() []IPhysicalPlan {
 	rt := make([]IPhysicalPlan, 0)
 	rt = append(rt, a.Input)
 	return rt
 }
 
-func (a AggregateExec) ToString() string {
+func (a *AggregateExec) ToString() string {
 	return ""
 }
