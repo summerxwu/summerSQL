@@ -35,7 +35,7 @@ func arrowStrAddFunc(l catalog.ArrowColumnVector, r catalog.ArrowColumnVector) *
 }
 
 func ArrowAddEvalFunc(l catalog.IColumnVector, r catalog.IColumnVector) catalog.IColumnVector {
-	switch _ := l.GetType().(type) {
+	switch l.GetType().(type) {
 	case *catalog.IntType:
 		{
 			return arrowInt64AddFunc(l.(catalog.ArrowColumnVector), r.(catalog.ArrowColumnVector))

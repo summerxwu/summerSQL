@@ -20,7 +20,7 @@ func NewAddPhysicalExpr(l IPhysicalExpr, r IPhysicalExpr) *AddPhysicalExpr {
 }
 
 func AddEvalBinaryFunc(l catalog.IColumnVector, r catalog.IColumnVector) catalog.IColumnVector {
-	switch _ := l.(type) {
+	switch l.(type) {
 	case *catalog.ArrowColumnVector:
 		{
 			return ArrowAddEvalFunc(l, r)

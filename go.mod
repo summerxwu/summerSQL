@@ -1,6 +1,6 @@
 module summerSQL
 
-go 1.17
+go 1.19
 
 require (
 	github.com/apache/arrow/go/v6 v6.0.2

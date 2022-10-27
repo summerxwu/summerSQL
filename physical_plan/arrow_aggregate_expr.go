@@ -10,7 +10,7 @@ type MaxAccumulator struct {
 
 func (m *MaxAccumulator) Accumulate(val interface{}) {
 	var isBigger = false
-	switch _ := m.rtValue.(type) {
+	switch m.rtValue.(type) {
 	case int64:
 		{
 			isBigger = val.(int64) > m.rtValue.(int64)

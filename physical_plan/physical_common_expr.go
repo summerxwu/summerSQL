@@ -14,6 +14,10 @@ type ColumnPhysicalExpr struct {
 	Index int
 }
 
+func NewColumnPhysicalExpr(index int) *ColumnPhysicalExpr {
+	return &ColumnPhysicalExpr{Index: index}
+}
+
 func (c *ColumnPhysicalExpr) Evaluate(input catalog.BatchColumns) catalog.IColumnVector {
 	return input.BatchVector[c.Index]
 }
@@ -80,7 +84,7 @@ func (l *LiteralBooleanPhysicalExpr) Evaluate(input catalog.BatchColumns) catalo
 	retVal := catalog.NewArrowColumnVector(column)
 	builder := catalog.NewArrowColumnVectorBuilder(column)
 	for i := 0; i < input.RowCount(); i++ {
-		_ = builder.Append(l.rawValue)
+		_ = builder.StrAppend(l.rawValue)
 	}
 	retVal.Value = builder.Builder.NewArray()
 	return retVal
@@ -103,7 +107,7 @@ func (l *LiteralDoublePhysicalExpr) Evaluate(input catalog.BatchColumns) catalog
 	retVal := catalog.NewArrowColumnVector(column)
 	builder := catalog.NewArrowColumnVectorBuilder(column)
 	for i := 0; i < input.RowCount(); i++ {
-		_ = builder.Append(l.rawValue)
+		_ = builder.StrAppend(l.rawValue)
 	}
 	retVal.Value = builder.Builder.NewArray()
 	return retVal

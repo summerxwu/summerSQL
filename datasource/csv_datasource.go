@@ -82,7 +82,7 @@ func (C *CSVDataSource) dealRawDataByBuilders(rawData []string) error {
 	for _, i2 := range C.readerSchema.Fields {
 		builder := C.arrayBuilder[i2.Name]
 		index := i2.Index
-		err := builder.Append(rawData[index])
+		err := builder.StrAppend(rawData[index])
 		if err != nil {
 			return err
 		}
