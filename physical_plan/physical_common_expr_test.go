@@ -8,7 +8,7 @@ import (
 )
 
 func createBatchColumn(path string) catalog.BatchColumns {
-	inputCsvFileFullPath := "/Users/summerxwu/GolandProjects/summerSQL/test/employee.csv"
+	inputCsvFileFullPath := path
 	inputCsvSchema := catalog.Schema{
 		Fields: make([]*catalog.Column, 0),
 	}
@@ -52,14 +52,21 @@ func TestColumnPhysicalExpr_Evaluate(t *testing.T) {
 	bc := createBatchColumn("/Users/summerxwu/GolandProjects/summerSQL/test/employee.csv")
 	cExpr := NewColumnPhysicalExpr(2)
 	rt := cExpr.Evaluate(bc)
-	rtStr, _ := rt.Print()
+	rtStr, err := rt.Print()
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 	fmt.Println(rtStr)
 }
+
 func TestLiteralStrPhysicalExpr_Evaluate(t *testing.T) {
 	bc := createBatchColumn("/Users/summerxwu/GolandProjects/summerSQL/test/employee.csv")
 	expr := NewLiteralStrPhysicalExpr("summer")
 	rt := expr.Evaluate(bc)
-	rtStr, _ := rt.Print()
+	rtStr, err := rt.Print()
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 	fmt.Println(rtStr)
 
 }
@@ -68,6 +75,24 @@ func TestLiteralBooleanPhysicalExpr_Evaluate(t *testing.T) {
 	bc := createBatchColumn("/Users/summerxwu/GolandProjects/summerSQL/test/employee.csv")
 	expr := NewLiteralBooleanPhysicalExpr("1")
 	rt := expr.Evaluate(bc)
-	rtStr, _ := rt.Print()
+	rtStr, err := rt.Print()
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 	fmt.Println(rtStr)
+}
+
+func TestLiteralDoublePhysicalExpr_Evaluate(t *testing.T) {
+	bc := createBatchColumn("/Users/summerxwu/GolandProjects/summerSQL/test/employee.csv")
+	expr := NewLiteralDoublePhysicalExpr("1300")
+	rt := expr.Evaluate(bc)
+	rtStr, err := rt.Print()
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+	fmt.Println(rtStr)
+}
+
+func TestNewAddPhysicalExpr(t *testing.T) {
+
 }
