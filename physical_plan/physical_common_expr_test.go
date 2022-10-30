@@ -94,5 +94,6 @@ func TestLiteralDoublePhysicalExpr_Evaluate(t *testing.T) {
 }
 
 func TestNewAddPhysicalExpr(t *testing.T) {
+	t.Fatalf("panic")
 
 }
