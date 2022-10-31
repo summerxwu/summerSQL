@@ -22,6 +22,9 @@ func NewScan(datasource datasource.IDataSource, projection *catalog.Schema) (*Sc
 		pg = projection
 	} else {
 		pg = &catalog.Schema{Fields: make([]*catalog.Column, 0)}
+		for _, f := range datasource.Schema().Fields {
+			pg.Fields = append(pg.Fields, f)
+		}
 	}
 
 	sc := &Scan{

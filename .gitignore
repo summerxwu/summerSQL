@@ -5,6 +5,8 @@ coverage*
 y.output
 
 # data
+test/*
+.DS_Store
 
 # packages
 src/gopkg.in/*

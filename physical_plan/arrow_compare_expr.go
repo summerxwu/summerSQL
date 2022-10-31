@@ -13,10 +13,11 @@ func ArrowEqBinaryFunc(l *catalog.ArrowColumnVector, r *catalog.ArrowColumnVecto
 		lv := l.GetValue(i)
 		rv := r.GetValue(i)
 		if rv == lv {
-			err = builder.Append("1")
+			err = builder.StrAppend("1")
 		} else {
-			err = builder.Append("0")
+			err = builder.StrAppend("0")
 		}
+		result.Length++
 		if err != nil {
 			panic("Expr Eval failed")
 		}
@@ -34,10 +35,11 @@ func ArrowNeqBinaryFunc(l *catalog.ArrowColumnVector, r *catalog.ArrowColumnVect
 		lv := l.GetValue(i)
 		rv := r.GetValue(i)
 		if rv != lv {
-			err = builder.Append("1")
+			err = builder.StrAppend("1")
 		} else {
-			err = builder.Append("0")
+			err = builder.StrAppend("0")
 		}
+		result.Length++
 		if err != nil {
 			panic("Expr Eval failed")
 		}

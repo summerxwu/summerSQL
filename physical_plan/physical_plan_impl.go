@@ -33,7 +33,7 @@ func (s *ScanExec) Schema() catalog.Schema {
 }
 
 func (s *ScanExec) Execute() *catalog.BatchColumns {
-	rSlt, err := s.DataSource.Scan(*s.Projection)
+	rSlt, err := s.DataSource.Scan(s.Schema())
 	if err != nil {
 		return nil
 	}
@@ -45,19 +45,19 @@ func (s *ScanExec) ChildNodes() []IPhysicalPlan {
 }
 
 type ProjectionExec struct {
-	Input  IPhysicalPlan
-	Expr   []IPhysicalExpr
-	schema *catalog.Schema
+	Input   IPhysicalPlan
+	Expr    []IPhysicalExpr
+	PSchema *catalog.Schema
 }
 
 func (p *ProjectionExec) Schema() catalog.Schema {
-	return *p.schema
+	return *p.PSchema
 }
 
 func (p *ProjectionExec) Execute() *catalog.BatchColumns {
 	inputBatch := p.Input.Execute()
 	outputBatch := &catalog.BatchColumns{
-		BatchSchema: *p.schema,
+		BatchSchema: *p.PSchema,
 		BatchVector: make([]catalog.IColumnVector, 0),
 	}
 	for _, expr := range p.Expr {
@@ -129,7 +129,7 @@ func (f *FilterExec) filterColumnVec(
 
 	for i := 0; i < filterValue.Size(); i++ {
 		swapOut := filterValue.GetValue(i).(bool)
-		if swapOut != true {
+		if swapOut == true {
 			switch v := builder.Builder.(type) {
 			case *array.StringBuilder:
 				{

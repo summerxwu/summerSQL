@@ -91,8 +91,9 @@ func CreatePhysicalPlan(lPlan logical_plan.ILogicPlan) (physical_plan.IPhysicalP
 
 			}
 			result := &physical_plan.ProjectionExec{
-				Input: input,
-				Expr:  exprs,
+				Input:   input,
+				Expr:    exprs,
+				PSchema: v.Schema(),
 			}
 			return result, nil
 		}

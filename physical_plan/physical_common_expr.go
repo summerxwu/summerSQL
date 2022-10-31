@@ -34,8 +34,9 @@ func NewLiteralStrPhysicalExpr(rawValue string) *LiteralStrPhysicalExpr {
 }
 
 func (l *LiteralStrPhysicalExpr) Evaluate(input catalog.BatchColumns) catalog.IColumnVector {
-	column := catalog.NewColumn(catalog.NewArrowStringType(), "None", input.RowCount())
+	column := catalog.NewColumn(catalog.NewArrowStringType(), "None", 0)
 	retVal := catalog.NewArrowColumnVector(column)
+	retVal.Length = input.RowCount()
 	builder := catalog.NewArrowColumnVectorBuilder(column)
 	for i := 0; i < input.RowCount(); i++ {
 		_ = builder.Append(l.rawValue)
@@ -57,8 +58,9 @@ func NewLiteralIntPhysicalExpr(rawValue string) *LiteralIntPhysicalExpr {
 }
 
 func (l *LiteralIntPhysicalExpr) Evaluate(input catalog.BatchColumns) catalog.IColumnVector {
-	column := catalog.NewColumn(catalog.NewArrowIntType(), "None", input.RowCount())
+	column := catalog.NewColumn(catalog.NewArrowIntType(), "None", 0)
 	retVal := catalog.NewArrowColumnVector(column)
+	retVal.Length = input.RowCount()
 	builder := catalog.NewArrowColumnVectorBuilder(column)
 	for i := 0; i < input.RowCount(); i++ {
 		_ = builder.Append(l.rawValue)
@@ -80,8 +82,9 @@ func NewLiteralBooleanPhysicalExpr(rawValue string) *LiteralBooleanPhysicalExpr 
 }
 
 func (l *LiteralBooleanPhysicalExpr) Evaluate(input catalog.BatchColumns) catalog.IColumnVector {
-	column := catalog.NewColumn(catalog.NewArrowBoolType(), "None", input.RowCount())
+	column := catalog.NewColumn(catalog.NewArrowBoolType(), "None", 0)
 	retVal := catalog.NewArrowColumnVector(column)
+	retVal.Length = input.RowCount()
 	builder := catalog.NewArrowColumnVectorBuilder(column)
 	for i := 0; i < input.RowCount(); i++ {
 		_ = builder.StrAppend(l.rawValue)
@@ -103,8 +106,9 @@ func NewLiteralDoublePhysicalExpr(rawValue string) *LiteralDoublePhysicalExpr {
 }
 
 func (l *LiteralDoublePhysicalExpr) Evaluate(input catalog.BatchColumns) catalog.IColumnVector {
-	column := catalog.NewColumn(catalog.NewArrowDoubleType(), "None", input.RowCount())
+	column := catalog.NewColumn(catalog.NewArrowDoubleType(), "None", 0)
 	retVal := catalog.NewArrowColumnVector(column)
+	retVal.Length = input.RowCount()
 	builder := catalog.NewArrowColumnVectorBuilder(column)
 	for i := 0; i < input.RowCount(); i++ {
 		_ = builder.StrAppend(l.rawValue)

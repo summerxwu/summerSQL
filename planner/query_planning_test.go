@@ -1,21 +1,18 @@
-package logical_plan
+package planner
 
 import (
 	"fmt"
 	"summerSQL/catalog"
-	"summerSQL/datasource"
+	"summerSQL/logical_plan"
 	"testing"
 )
 
-func TestNewLogicPlanAndPrint(t *testing.T) {
-
-	// SELECT * FROM employee WHERE state = 'CO'
-
-	// construct scan
+func TestCreateAndExecutePhysicalPlan(t *testing.T) {
 	inputCsvFileFullPath := "/Users/summerxwu/GolandProjects/summerSQL/test/employee.csv"
 	inputCsvSchema := catalog.Schema{
 		Fields: make([]*catalog.Column, 0),
 	}
+
 	// id,first_name,last_name,state,job_title,salary,insurance
 	// 1,Bill,Hopkins,CA,Manager,12000,true
 	// 2,Gregg,Langford,CO,Driver,10000,false
@@ -35,54 +32,36 @@ func TestNewLogicPlanAndPrint(t *testing.T) {
 	inputCsvSchema.Fields = append(inputCsvSchema.Fields, cSalary)
 	cInsurance := catalog.NewColumn(catalog.NewArrowBoolType(), "insurance", 6)
 	inputCsvSchema.Fields = append(inputCsvSchema.Fields, cInsurance)
+	eCtx, err := logical_plan.ExecutionContext{}.CSVDataFrame(inputCsvFileFullPath, inputCsvSchema)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+	eCtx.Filter(
+		logical_plan.NewEq(
+			&logical_plan.ColumnExpr{Name: "state"}, &logical_plan.LiteralStringExpr{
+				Literal: "CO",
+			},
+		),
+	).Projection(
+		[]logical_plan.ILogicExpr{
+			&logical_plan.ColumnExpr{
+				Name: "id",
+			},
+			&logical_plan.ColumnExpr{
+				Name: "fisrt_name",
+			},
+			&logical_plan.ColumnExpr{
+				Name: "last_name",
+			},
+		},
+	)
+	fmt.Printf(logical_plan.PrintPretty(eCtx.Final_logicPlan, "", "    "))
 
-	// projection := catalog.Schema{
-	//	Fields: make([]*catalog.Column, 0),
-	// }
-	// projection.Fields = append(projection.Fields, cId)
-	// projection.Fields = append(projection.Fields, cFirstName)
-	// projection.Fields = append(projection.Fields, cJobTitle)
-	// projection.Fields = append(projection.Fields, cInsurance)
-	ds := datasource.NewCSVDataSource(inputCsvFileFullPath, inputCsvSchema, 100)
+	ph, err := CreatePhysicalPlan(eCtx.Final_logicPlan)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 
-	scan, _ := NewScan(ds, nil)
-	// construct Filter
-	// setup Expr
-	clExpr := ColumnExpr{
-		Name: "state",
-	}
-	lStrExpr := LiteralStringExpr{
-		Literal: "CO",
-	}
-	eq := NewEq(&clExpr, &lStrExpr)
-	Expr := make([]ILogicExpr, 0)
-	Expr = append(Expr, eq)
-	filter := NewFilter(scan, Expr[0])
-	// construct projection
-	// construct column expr
-	CExpr := make([]ILogicExpr, 0)
-	C1 := &ColumnExpr{
-		Name: "id",
-	}
-	CExpr = append(CExpr, C1)
-	C2 := &ColumnExpr{
-		Name: "first_name",
-	}
-	CExpr = append(CExpr, C2)
-	C3 := &ColumnExpr{
-		Name: "last_name",
-	}
-	CExpr = append(CExpr, C3)
-	C4 := &ColumnExpr{
-		Name: "state",
-	}
-	CExpr = append(CExpr, C4)
-	C5 := &ColumnExpr{
-		Name: "salary",
-	}
-	CExpr = append(CExpr, C5)
-
-	pj := NewProjection(filter, CExpr)
-	fmt.Println(PrintPretty(pj, "", "    "))
-
+	br := ph.Execute()
+	br.Print()
 }

@@ -38,12 +38,12 @@ func ArrowAddEvalFunc(l catalog.IColumnVector, r catalog.IColumnVector) catalog.
 	switch l.GetType().(type) {
 	case *catalog.IntType:
 		{
-			return arrowInt64AddFunc(l.(catalog.ArrowColumnVector), r.(catalog.ArrowColumnVector))
+			return arrowInt64AddFunc(*(l.(*catalog.ArrowColumnVector)), *(r.(*catalog.ArrowColumnVector)))
 		}
 	case *catalog.StringType:
 		{
 
-			return arrowStrAddFunc(l.(catalog.ArrowColumnVector), r.(catalog.ArrowColumnVector))
+			return *arrowStrAddFunc(*(l.(*catalog.ArrowColumnVector)), *(r.(*catalog.ArrowColumnVector)))
 		}
 	default:
 		panic("datatype not supported")

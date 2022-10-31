@@ -43,8 +43,8 @@ func createBatchColumn(path string) catalog.BatchColumns {
 	projection.Fields = append(projection.Fields, cInsurance)
 
 	dataSource := datasource.NewCSVDataSource(inputCsvFileFullPath, inputCsvSchema, 100)
-	retVal, _ := dataSource.Scan(projection)
-	// retVal.Print()
+	retVal, _ := dataSource.Scan(inputCsvSchema)
+	retVal.Print()
 	return retVal
 }
 
@@ -94,6 +94,27 @@ func TestLiteralDoublePhysicalExpr_Evaluate(t *testing.T) {
 }
 
 func TestNewAddPhysicalExpr(t *testing.T) {
-	t.Fatalf("panic")
+	bc := createBatchColumn("/Users/summerxwu/GolandProjects/summerSQL/test/employee.csv")
+	expr := NewAddPhysicalExpr(NewColumnPhysicalExpr(0), NewColumnPhysicalExpr(0))
+	rt := expr.Evaluate(bc)
+	rtStr, err := rt.Print()
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+	fmt.Println(rtStr)
+}
+
+func TestNewEqBinaryPhysicalExpr(t *testing.T) {
+	bc := createBatchColumn("/Users/summerxwu/GolandProjects/summerSQL/test/employee.csv")
+	cExprL := NewColumnPhysicalExpr(2)
+	cExprR := NewColumnPhysicalExpr(3)
+	// expr := NewNeqBinaryPhysicalExpr(cExprL, cExprR)
+	expr := NewEqBinaryPhysicalExpr(cExprL, cExprR)
+	rt := expr.Evaluate(bc)
+	rtStr, err := rt.Print()
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+	fmt.Println(rtStr)
 
 }
