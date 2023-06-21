@@ -7,4 +7,5 @@ import (
 
 func CreateLogicalPlan([]ast.StmtNode) logical_plan.ILogicPlan {
 
+	return nil
 }
