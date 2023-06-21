@@ -5,7 +5,7 @@ coverage*
 y.output
 
 # data
-test/*
+test_data/*
 .DS_Store
 
 # packages

@@ -2,7 +2,7 @@ package optimizer
 
 import (
 	"summerSQL/catalog"
-	"summerSQL/logical_plan"
+	logical_plan2 "summerSQL/planner/logical_plan"
 )
 
 type ProjectionPushDownRule struct {
@@ -13,9 +13,9 @@ func NewProjectionPushDownRule() *ProjectionPushDownRule {
 	return &ProjectionPushDownRule{ExtractedColumn: make(map[string]*catalog.Column)}
 }
 
-func (p *ProjectionPushDownRule) extractColumn(plan logical_plan.ILogicPlan) error {
+func (p *ProjectionPushDownRule) extractColumn(plan logical_plan2.ILogicPlan) error {
 	switch v := plan.(type) {
-	case *logical_plan.Projection:
+	case *logical_plan2.Projection:
 		{
 			err := p.extract(v.Expr)
 			if err != nil {
@@ -34,30 +34,30 @@ func (p *ProjectionPushDownRule) extractColumn(plan logical_plan.ILogicPlan) err
 	return nil
 }
 
-func (p *ProjectionPushDownRule) extract(exprs []logical_plan.ILogicExpr) error {
+func (p *ProjectionPushDownRule) extract(exprs []logical_plan2.ILogicExpr) error {
 	for _, expr := range exprs {
 		switch v := expr.(type) {
-		case *logical_plan.ColumnExpr:
+		case *logical_plan2.ColumnExpr:
 			{
 				p.ExtractedColumn[v.Name] = nil
 				break
 			}
-		case *logical_plan.AggregateExpr:
+		case *logical_plan2.AggregateExpr:
 			{
-				err := p.extract([]logical_plan.ILogicExpr{v.Expr})
+				err := p.extract([]logical_plan2.ILogicExpr{v.Expr})
 				if err != nil {
 					return err
 				}
 				break
 			}
-		case *logical_plan.BinaryExpr:
+		case *logical_plan2.BinaryExpr:
 			{
 				// TODO: confirm bool binary expr and math binary expr can fall here
-				err := p.extract([]logical_plan.ILogicExpr{v.L})
+				err := p.extract([]logical_plan2.ILogicExpr{v.L})
 				if err != nil {
 					return err
 				}
-				err = p.extract([]logical_plan.ILogicExpr{v.R})
+				err = p.extract([]logical_plan2.ILogicExpr{v.R})
 				if err != nil {
 					return err
 				}
@@ -71,9 +71,9 @@ func (p *ProjectionPushDownRule) extract(exprs []logical_plan.ILogicExpr) error 
 	return nil
 }
 
-func (p *ProjectionPushDownRule) pushDown(plan logical_plan.ILogicPlan) error {
+func (p *ProjectionPushDownRule) pushDown(plan logical_plan2.ILogicPlan) error {
 	switch v := plan.(type) {
-	case *logical_plan.Scan:
+	case *logical_plan2.Scan:
 		{
 			projections := &catalog.Schema{Fields: make([]*catalog.Column, 0)}
 			for s := range p.ExtractedColumn {
@@ -97,7 +97,7 @@ func (p *ProjectionPushDownRule) pushDown(plan logical_plan.ILogicPlan) error {
 	return nil
 }
 
-func (p *ProjectionPushDownRule) Optimize(plan logical_plan.ILogicPlan) (logical_plan.ILogicPlan, error) {
+func (p *ProjectionPushDownRule) Optimize(plan logical_plan2.ILogicPlan) (logical_plan2.ILogicPlan, error) {
 	err := p.extractColumn(plan)
 	if err != nil {
 		return nil, err
@@ -110,13 +110,13 @@ func (p *ProjectionPushDownRule) Optimize(plan logical_plan.ILogicPlan) (logical
 }
 
 type PredictionPushDownRule struct {
-	ExtractedExpr logical_plan.ILogicExpr
+	ExtractedExpr logical_plan2.ILogicExpr
 }
 
 func NewPredictionPushDownRule() *PredictionPushDownRule {
 	return &PredictionPushDownRule{ExtractedExpr: nil}
 }
 
-func (p *PredictionPushDownRule) Optimize(plan logical_plan.ILogicPlan) (logical_plan.ILogicPlan, error) {
+func (p *PredictionPushDownRule) Optimize(plan logical_plan2.ILogicPlan) (logical_plan2.ILogicPlan, error) {
 	return nil, nil
 }

@@ -1,18 +1,21 @@
-package optimizer
+package logical_plan
 
 import (
 	"fmt"
+	"summerSQL/access"
 	"summerSQL/catalog"
-	logical_plan2 "summerSQL/planner/logical_plan"
 	"testing"
 )
 
-func TestProjectionPushDownRule_Optimize(t *testing.T) {
+func TestNewLogicPlanAndPrint(t *testing.T) {
+
+	// SELECT * FROM employee WHERE state = 'CO'
+
+	// construct scan
 	inputCsvFileFullPath := "/Users/summerxwu/GolandProjects/summerSQL/test_data/employee.csv"
 	inputCsvSchema := catalog.Schema{
 		Fields: make([]*catalog.Column, 0),
 	}
-
 	// id,first_name,last_name,state,job_title,salary,insurance
 	// 1,Bill,Hopkins,CA,Manager,12000,true
 	// 2,Gregg,Langford,CO,Driver,10000,false
@@ -32,36 +35,54 @@ func TestProjectionPushDownRule_Optimize(t *testing.T) {
 	inputCsvSchema.Fields = append(inputCsvSchema.Fields, cSalary)
 	cInsurance := catalog.NewColumn(catalog.NewArrowBoolType(), "insurance", 6)
 	inputCsvSchema.Fields = append(inputCsvSchema.Fields, cInsurance)
-	eCtx, err := logical_plan2.ExecutionContext{}.CSVDataFrame(inputCsvFileFullPath, inputCsvSchema)
-	if err != nil {
-		t.Fatalf(err.Error())
+
+	// projection := catalog.Schema{
+	//	Fields: make([]*catalog.Column, 0),
+	// }
+	// projection.Fields = append(projection.Fields, cId)
+	// projection.Fields = append(projection.Fields, cFirstName)
+	// projection.Fields = append(projection.Fields, cJobTitle)
+	// projection.Fields = append(projection.Fields, cInsurance)
+	ds := access.NewCSVDataSource(inputCsvFileFullPath, inputCsvSchema, 100)
+
+	scan, _ := NewScan(ds, nil)
+	// construct Filter
+	// setup Expr
+	clExpr := ColumnExpr{
+		Name: "state",
 	}
-	eCtx.Filter(
-		logical_plan2.NewEq(
-			&logical_plan2.ColumnExpr{Name: "state"}, &logical_plan2.LiteralStringExpr{
-				Literal: "CO",
-			},
-		),
-	).Projection(
-		[]logical_plan2.ILogicExpr{
-			&logical_plan2.ColumnExpr{
-				Name: "id",
-			},
-			&logical_plan2.ColumnExpr{
-				Name: "fisrt_name",
-			},
-			&logical_plan2.ColumnExpr{
-				Name: "last_name",
-			},
-		},
-	)
-	fmt.Printf(logical_plan2.PrintPretty(eCtx.Final_logicPlan, "", "    "))
-	op := NewProjectionPushDownRule()
-	pl, err := op.Optimize(eCtx.Final_logicPlan)
-	if err != nil {
-		t.Fatalf(err.Error())
+	lStrExpr := LiteralStringExpr{
+		Literal: "CO",
 	}
-	fmt.Println("===========After Optimize============")
-	fmt.Printf(logical_plan2.PrintPretty(pl, "", "    "))
+	eq := NewEq(&clExpr, &lStrExpr)
+	Expr := make([]ILogicExpr, 0)
+	Expr = append(Expr, eq)
+	filter := NewFilter(scan, Expr[0])
+	// construct projection
+	// construct column expr
+	CExpr := make([]ILogicExpr, 0)
+	C1 := &ColumnExpr{
+		Name: "id",
+	}
+	CExpr = append(CExpr, C1)
+	C2 := &ColumnExpr{
+		Name: "first_name",
+	}
+	CExpr = append(CExpr, C2)
+	C3 := &ColumnExpr{
+		Name: "last_name",
+	}
+	CExpr = append(CExpr, C3)
+	C4 := &ColumnExpr{
+		Name: "state",
+	}
+	CExpr = append(CExpr, C4)
+	C5 := &ColumnExpr{
+		Name: "salary",
+	}
+	CExpr = append(CExpr, C5)
+
+	pj := NewProjection(filter, CExpr)
+	fmt.Println(PrintPretty(pj, "", "    "))
 
 }

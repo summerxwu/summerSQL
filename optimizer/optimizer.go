@@ -1,6 +1,8 @@
 package optimizer
 
-import "summerSQL/logical_plan"
+import (
+	"summerSQL/planner/logical_plan"
+)
 
 var (
 	OptimizerRuls []IOptimizer

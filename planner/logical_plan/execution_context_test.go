@@ -1,13 +1,12 @@
-package optimizer
+package logical_plan
 
 import (
 	"fmt"
 	"summerSQL/catalog"
-	logical_plan2 "summerSQL/planner/logical_plan"
 	"testing"
 )
 
-func TestProjectionPushDownRule_Optimize(t *testing.T) {
+func TestNewExecutionContext(t *testing.T) {
 	inputCsvFileFullPath := "/Users/summerxwu/GolandProjects/summerSQL/test_data/employee.csv"
 	inputCsvSchema := catalog.Schema{
 		Fields: make([]*catalog.Column, 0),
@@ -32,36 +31,29 @@ func TestProjectionPushDownRule_Optimize(t *testing.T) {
 	inputCsvSchema.Fields = append(inputCsvSchema.Fields, cSalary)
 	cInsurance := catalog.NewColumn(catalog.NewArrowBoolType(), "insurance", 6)
 	inputCsvSchema.Fields = append(inputCsvSchema.Fields, cInsurance)
-	eCtx, err := logical_plan2.ExecutionContext{}.CSVDataFrame(inputCsvFileFullPath, inputCsvSchema)
+	eCtx, err := ExecutionContext{}.CSVDataFrame(inputCsvFileFullPath, inputCsvSchema)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
 	eCtx.Filter(
-		logical_plan2.NewEq(
-			&logical_plan2.ColumnExpr{Name: "state"}, &logical_plan2.LiteralStringExpr{
+		NewEq(
+			&ColumnExpr{"state"}, &LiteralStringExpr{
 				Literal: "CO",
 			},
 		),
 	).Projection(
-		[]logical_plan2.ILogicExpr{
-			&logical_plan2.ColumnExpr{
+		[]ILogicExpr{
+			&ColumnExpr{
 				Name: "id",
 			},
-			&logical_plan2.ColumnExpr{
+			&ColumnExpr{
 				Name: "fisrt_name",
 			},
-			&logical_plan2.ColumnExpr{
+			&ColumnExpr{
 				Name: "last_name",
 			},
 		},
 	)
-	fmt.Printf(logical_plan2.PrintPretty(eCtx.Final_logicPlan, "", "    "))
-	op := NewProjectionPushDownRule()
-	pl, err := op.Optimize(eCtx.Final_logicPlan)
-	if err != nil {
-		t.Fatalf(err.Error())
-	}
-	fmt.Println("===========After Optimize============")
-	fmt.Printf(logical_plan2.PrintPretty(pl, "", "    "))
+	fmt.Printf(PrintPretty(eCtx.Final_logicPlan, "", "    "))
 
 }

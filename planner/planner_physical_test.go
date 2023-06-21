@@ -1,4 +1,4 @@
-package optimizer
+package planner
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestProjectionPushDownRule_Optimize(t *testing.T) {
+func TestCreateAndExecutePhysicalPlan(t *testing.T) {
 	inputCsvFileFullPath := "/Users/summerxwu/GolandProjects/summerSQL/test_data/employee.csv"
 	inputCsvSchema := catalog.Schema{
 		Fields: make([]*catalog.Column, 0),
@@ -56,12 +56,12 @@ func TestProjectionPushDownRule_Optimize(t *testing.T) {
 		},
 	)
 	fmt.Printf(logical_plan2.PrintPretty(eCtx.Final_logicPlan, "", "    "))
-	op := NewProjectionPushDownRule()
-	pl, err := op.Optimize(eCtx.Final_logicPlan)
+
+	ph, err := CreatePhysicalPlan(eCtx.Final_logicPlan)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
-	fmt.Println("===========After Optimize============")
-	fmt.Printf(logical_plan2.PrintPretty(pl, "", "    "))
 
+	br := ph.Execute()
+	br.Print()
 }

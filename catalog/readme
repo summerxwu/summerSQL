@@ -1,0 +1,2 @@
+summerSQL is using Apache/ARROW as the type system infrastructure,
+thus catalog directory dose not contain the generic type or schema definition.
