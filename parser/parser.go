@@ -6,7 +6,7 @@ import (
 	_ "github.com/pingcap/tidb/parser/test_driver"
 )
 
-func Parser(query string) ([]ast.StmtNode, error) {
+func Parse(query string) ([]ast.StmtNode, error) {
 	p := parser.New()
 	sn, _, err := p.Parse(query, "", "")
 	if err != nil {
