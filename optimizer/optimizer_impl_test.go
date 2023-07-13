@@ -57,11 +57,11 @@ func TestProjectionPushDownRule_Optimize(t *testing.T) {
 	)
 	fmt.Printf(logical_plan2.PrintPretty(eCtx.Final_logicPlan, "", "    "))
 	op := NewProjectionPushDownRule()
-	pl, err := op.Optimize(eCtx.Final_logicPlan)
+	pl, err := op.optimize(eCtx.Final_logicPlan)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
-	fmt.Println("===========After Optimize============")
+	fmt.Println("===========After optimize============")
 	fmt.Printf(logical_plan2.PrintPretty(pl, "", "    "))
 
 }

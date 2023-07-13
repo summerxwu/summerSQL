@@ -1,12 +1,16 @@
 package server
 
 import (
+	"github.com/pingcap/tidb/parser"
+	"summerSQL/optimizer"
+	"summerSQL/planner"
+	"summerSQL/portal"
 	"summerSQL/server/mysql"
 	"vitess.io/vitess/go/sqltypes"
 	querypb "vitess.io/vitess/go/vt/proto/query"
 )
 
-var selectRowsResult = &sqltypes.Result{
+var SelectRowsResult = &sqltypes.Result{
 	Fields: []*querypb.Field{
 		{
 			Name: "id",
@@ -52,7 +56,23 @@ func (s SummerSQLHandler) ConnectionClosed(c *mysql.Conn) {
 }
 
 func (s SummerSQLHandler) ComQuery(c *mysql.Conn, query string, callback func(*sqltypes.Result) error) error {
-	callback(selectRowsResult)
+	//TODO: handle the errors and warnings
+	//TODO: multi statements will be support further
+
+	// parse query
+	parser := parser.New()
+	sn, _, _ := parser.Parse(query, "", "")
+	// plan query
+	logicalPlan := planner.CreateLogicalPlan(sn)
+	// optimize query plan
+	optimizedLogicalPlan, _ := optimizer.Optimize(logicalPlan)
+	// create physical plan
+	physicalPlan, _ := planner.CreatePhysicalPlan(optimizedLogicalPlan)
+	// execute the plan
+	finalResult := portal.ExecutePlan(physicalPlan)
+	// echo back the result
+	callback(&finalResult)
+
 	return nil
 }
 

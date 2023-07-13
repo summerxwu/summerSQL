@@ -528,7 +528,7 @@ func (c *Conn) readOnePacket() ([]byte, error) {
 // It re-assembles packets that span more than one message.
 // This method returns a generic error, not a SQLError.
 func (c *Conn) readPacket() ([]byte, error) {
-	// Optimize for a single packet case.
+	// optimize for a single packet case.
 	data, err := c.readOnePacket()
 	if err != nil {
 		return nil, err

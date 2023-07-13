@@ -2,7 +2,6 @@ package logical_plan
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"summerSQL/catalog"
 )
@@ -14,12 +13,9 @@ type Scan struct {
 	Quals      *Filter
 }
 
-func NewScan(relSchema *catalog.Schema, relName string) (*Scan, error) {
-	if relSchema == nil {
-		return nil, errors.New(fmt.Sprintf("Invalid schema define for %s", relName))
-	}
-
-	sc := &Scan{Projection: nil, RelSchema: relSchema, RelName: relName, Quals: nil}
+func NewScan(relName string) (*Scan, error) {
+	// schema info will be filled in binding phase
+	sc := &Scan{Projection: nil, RelSchema: nil, RelName: relName, Quals: nil}
 	return sc, nil
 }
 
