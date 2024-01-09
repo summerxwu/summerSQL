@@ -9,4 +9,4 @@ var (
 	ColumnDefineMissing = errors.New("can't find column define")
 )
 
-type Schema = arrow.Schema
+type TSchema = arrow.Schema

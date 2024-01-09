@@ -23,7 +23,7 @@ func (p *Projector) ToString() string {
 	}
 	return buff.String()
 }
-func (p *Projector) Schema() *catalog.Schema {
+func (p *Projector) Schema() *catalog.TSchema {
 	return nil
 }
 

@@ -11,7 +11,7 @@ type planNodeForTest struct {
 	ChildNodes []ILogicPlan
 }
 
-func (p planNodeForTest) Schema() *catalog.Schema {
+func (p planNodeForTest) Schema() *catalog.TSchema {
 	// TODO implement me
 	panic("implement me")
 }

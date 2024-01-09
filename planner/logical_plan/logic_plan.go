@@ -9,7 +9,7 @@ import (
 // ILogicPlan (e.g. The relation algebra operator) represent a
 // relation which consist of tuples with the relation schema
 type ILogicPlan interface {
-	Schema() *catalog.Schema
+	Schema() *catalog.TSchema
 	// Children return the Input logic plan
 	Children() []ILogicPlan
 	// ToString return the brief description about current logic plan

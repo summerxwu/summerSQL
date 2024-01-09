@@ -7,9 +7,9 @@ import (
 )
 
 type Scan struct {
-	Projection *Projector      `json:"projection"`
-	RelSchema  *catalog.Schema `json:"rel_schema"`
-	RelName    string          `json:"rel_name,omitempty"`
+	Projection *Projector       `json:"projection"`
+	RelSchema  *catalog.TSchema `json:"rel_schema"`
+	RelName    string           `json:"rel_name,omitempty"`
 	Quals      *Filter
 }
 
@@ -27,7 +27,7 @@ func (s *Scan) AddFilterOnScan(filter *Filter) {
 	s.Quals = filter
 }
 
-func (s *Scan) Schema() *catalog.Schema {
+func (s *Scan) Schema() *catalog.TSchema {
 	if s.Projection != nil {
 		return s.Projection.Schema()
 	}

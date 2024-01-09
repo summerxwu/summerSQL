@@ -6,7 +6,6 @@ require (
 	github.com/AdaLogics/go-fuzz-headers v0.0.0-20230106234847-43070de90fa1
 	github.com/apache/arrow/go/v11 v11.0.0
 	github.com/aquarapid/vaultlib v0.5.1
-	github.com/go-mysql-org/go-mysql v1.7.0
 	github.com/klauspost/compress v1.16.5
 	github.com/pingcap/tidb/parser v0.0.0-20230613083715-1837efe5286d
 	github.com/pires/go-proxyproto v0.7.0
@@ -29,7 +28,7 @@ require (
 	github.com/Microsoft/go-winio v0.6.0 // indirect
 	github.com/Shopify/toxiproxy/v2 v2.5.0 // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
-	github.com/apache/thrift v0.16.0 // indirect
+	github.com/apache/thrift v0.19.0 // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/benbjohnson/clock v1.3.5 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -91,9 +90,6 @@ require (
 	github.com/prometheus/procfs v0.9.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/secure-systems-lab/go-securesystemslib v0.4.0 // indirect
-	github.com/shopspring/decimal v0.0.0-20180709203117-cd690d0c9e24 // indirect
-	github.com/siddontang/go v0.0.0-20180604090527-bdc77568d726 // indirect
-	github.com/siddontang/go-log v0.0.0-20180807004314-8d05993dda07 // indirect
 	github.com/spf13/afero v1.9.3 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect

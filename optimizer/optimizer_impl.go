@@ -6,11 +6,11 @@ import (
 )
 
 type ProjectionPushDownRule struct {
-	ExtractedColumn map[string]*catalog.FieldDefine
+	ExtractedColumn map[string]*catalog.TField
 }
 
 func NewProjectionPushDownRule() *ProjectionPushDownRule {
-	return &ProjectionPushDownRule{ExtractedColumn: make(map[string]*catalog.FieldDefine)}
+	return &ProjectionPushDownRule{ExtractedColumn: make(map[string]*catalog.TField)}
 }
 
 func (p *ProjectionPushDownRule) extractColumn(plan logical_plan.ILogicPlan) error {
@@ -75,13 +75,13 @@ func (p *ProjectionPushDownRule) pushDown(plan logical_plan.ILogicPlan) error {
 	//switch v := plan.(type) {
 	//case *logical_plan.Scan:
 	//	{
-	//		projections := &catalog.Schema{Fields: make([]*catalog.Column, 0)}
+	//		projections := &catalog.TSchema{Fields: make([]*catalog.Column, 0)}
 	//		for s := range p.ExtractedColumn {
-	//			index, err := v.Schema().GetIndexByColumnNameCi(s)
+	//			index, err := v.TSchema().GetIndexByColumnNameCi(s)
 	//			if err != nil {
 	//				return err
 	//			}
-	//			projections.Fields = append(projections.Fields, v.Schema().Fields[index])
+	//			projections.Fields = append(projections.Fields, v.TSchema().Fields[index])
 	//		}
 	//		v.Projection = *projections
 	//		break

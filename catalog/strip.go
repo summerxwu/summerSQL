@@ -9,7 +9,7 @@ import (
 // IStrip is a datatype which represent a single column bounded with data
 type IStrip = arrow.Array
 
-type BooleanStrip = array.Boolean
+type TBooleanStrip = array.Boolean
 
 // IStripBuilder provides the API to create strip like value array
 type IStripBuilder = array.Builder

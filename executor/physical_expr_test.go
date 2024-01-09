@@ -9,7 +9,7 @@ import (
 
 func createBatchColumn(path string) catalog.BatchColumns {
 	inputCsvFileFullPath := path
-	inputCsvSchema := catalog.Schema{
+	inputCsvSchema := catalog.TSchema{
 		Fields: make([]*catalog.Column, 0),
 	}
 
@@ -34,7 +34,7 @@ func createBatchColumn(path string) catalog.BatchColumns {
 	inputCsvSchema.Fields = append(inputCsvSchema.Fields, cInsurance)
 
 	// init reader projection
-	projection := catalog.Schema{
+	projection := catalog.TSchema{
 		Fields: make([]*catalog.Column, 0),
 	}
 	projection.Fields = append(projection.Fields, cId)

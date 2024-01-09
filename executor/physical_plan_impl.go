@@ -11,10 +11,10 @@ import (
 
 type ScanExec struct {
 	DataSource access.IDataSource
-	Projection *catalog.Schema
+	Projection *catalog.TSchema
 }
 
-func NewScanExec(datasource access.IDataSource, projection *catalog.Schema) *ScanExec {
+func NewScanExec(datasource access.IDataSource, projection *catalog.TSchema) *ScanExec {
 	return &ScanExec{DataSource: datasource, Projection: projection}
 }
 
@@ -25,7 +25,7 @@ func (s *ScanExec) ToString() string {
 	)
 }
 
-func (s *ScanExec) Schema() catalog.Schema {
+func (s *ScanExec) Schema() catalog.TSchema {
 	if len(s.Projection.Fields) == 0 {
 		return s.DataSource.Schema()
 	}
@@ -47,10 +47,10 @@ func (s *ScanExec) ChildNodes() []IPhysicalPlan {
 type ProjectionExec struct {
 	Input   IPhysicalPlan
 	Expr    []IPhysicalExpr
-	PSchema *catalog.Schema
+	PSchema *catalog.TSchema
 }
 
-func (p *ProjectionExec) Schema() catalog.Schema {
+func (p *ProjectionExec) Schema() catalog.TSchema {
 	return *p.PSchema
 }
 
@@ -88,7 +88,7 @@ type FilterExec struct {
 	Expr  IPhysicalExpr
 }
 
-func (f *FilterExec) Schema() catalog.Schema {
+func (f *FilterExec) Schema() catalog.TSchema {
 	return f.Input.Schema()
 }
 
@@ -168,10 +168,10 @@ type AggregateExec struct {
 	Input     IPhysicalPlan
 	GroupExpr []IPhysicalExpr
 	AggExpr   []IAggregatePhysicalExpr
-	schema    catalog.Schema
+	schema    catalog.TSchema
 }
 
-func (a *AggregateExec) Schema() catalog.Schema {
+func (a *AggregateExec) Schema() catalog.TSchema {
 	return a.schema
 }
 

@@ -8,7 +8,7 @@ import (
 
 func TestNewExecutionContext(t *testing.T) {
 	inputCsvFileFullPath := "/Users/summerxwu/GolandProjects/summerSQL/test_data/employee.csv"
-	inputCsvSchema := catalog.Schema{
+	inputCsvSchema := catalog.TSchema{
 		Fields: make([]*catalog.Column, 0),
 	}
 

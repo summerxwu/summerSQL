@@ -5,6 +5,6 @@ import (
 )
 
 type IDataSource interface {
-	Schema() *catalog.Schema
+	Schema() *catalog.TSchema
 	Inhale() (catalog.IBatch, error)
 }

@@ -25,7 +25,7 @@ func NewJoinPlan(childPlan []ILogicPlan, cond []ILogicExpr, tp JoinType) *Join {
 	return &Join{childPlan, cond, tp}
 }
 
-func (j *Join) Schema() *catalog.Schema {
+func (j *Join) Schema() *catalog.TSchema {
 	return nil
 }
 

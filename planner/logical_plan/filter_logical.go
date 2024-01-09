@@ -14,7 +14,7 @@ func NewFilter(childPlans []ILogicPlan, expr ILogicExpr) *Filter {
 	return &Filter{ChildPlans: childPlans, Expr: expr}
 }
 
-func (f *Filter) Schema() *catalog.Schema {
+func (f *Filter) Schema() *catalog.TSchema {
 	return f.ChildPlans[0].Schema()
 }
 

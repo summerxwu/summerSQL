@@ -13,7 +13,7 @@ func TestNewLogicPlanAndPrint(t *testing.T) {
 
 	// construct scan
 	inputCsvFileFullPath := "/Users/summerxwu/GolandProjects/summerSQL/test_data/employee.csv"
-	inputCsvSchema := catalog.Schema{
+	inputCsvSchema := catalog.TSchema{
 		Fields: make([]*catalog.Column, 0),
 	}
 	// id,first_name,last_name,state,job_title,salary,insurance
@@ -36,7 +36,7 @@ func TestNewLogicPlanAndPrint(t *testing.T) {
 	cInsurance := catalog.NewColumn(catalog.NewArrowBoolType(), "insurance", 6)
 	inputCsvSchema.Fields = append(inputCsvSchema.Fields, cInsurance)
 
-	// projection := catalog.Schema{
+	// projection := catalog.TSchema{
 	//	Fields: make([]*catalog.Column, 0),
 	// }
 	// projection.Fields = append(projection.Fields, cId)

@@ -38,7 +38,7 @@ func (d *DataFrame) Aggregate(aggrExprs []ILogicExpr, groupExprs []ILogicExpr) *
 	return d
 }
 
-func (d *DataFrame) Schema() *catalog.Schema {
+func (d *DataFrame) Schema() *catalog.TSchema {
 	return d.Final_logicPlan.Schema()
 }
 

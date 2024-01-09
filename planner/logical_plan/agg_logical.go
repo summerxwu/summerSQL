@@ -15,7 +15,7 @@ func NewAggregate(childNodes ILogicPlan, expr []ILogicExpr, groupExpr []ILogicEx
 	return &Aggregate{ChildNodes: childNodes, Expr: expr, GroupExpr: groupExpr}
 }
 
-func (a *Aggregate) Schema() *catalog.Schema {
+func (a *Aggregate) Schema() *catalog.TSchema {
 	//todo: fetch the schema of aggregate plan directly
 	return nil
 }

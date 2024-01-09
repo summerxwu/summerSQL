@@ -8,6 +8,6 @@ import (
 // IBatch is datatype represents one or more strips bounded together
 type IBatch = arrow.Record
 
-func NewBatch(schema *Schema, cols []IStrip, nrows int64) IBatch {
+func NewBatch(schema *TSchema, cols []IStrip, nrows int64) IBatch {
 	return array.NewRecord(schema, cols, nrows)
 }
