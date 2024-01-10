@@ -13,7 +13,7 @@ func NewProjectionPushDownRule() *ProjectionPushDownRule {
 	return &ProjectionPushDownRule{ExtractedColumn: make(map[string]*catalog.TField)}
 }
 
-func (p *ProjectionPushDownRule) extractColumn(plan logical_plan.ILogicPlan) error {
+func (p *ProjectionPushDownRule) extractColumn(plan logical_plan.ILogicOperator) error {
 	switch v := plan.(type) {
 	case *logical_plan.Projector:
 		{
@@ -71,9 +71,9 @@ func (p *ProjectionPushDownRule) extract(exprs []logical_plan.ILogicExpr) error 
 	return nil
 }
 
-func (p *ProjectionPushDownRule) pushDown(plan logical_plan.ILogicPlan) error {
+func (p *ProjectionPushDownRule) pushDown(plan logical_plan.ILogicOperator) error {
 	//switch v := plan.(type) {
-	//case *logical_plan.Scan:
+	//case *logical_plan.LogicalScan:
 	//	{
 	//		projections := &catalog.TSchema{Fields: make([]*catalog.Column, 0)}
 	//		for s := range p.ExtractedColumn {
@@ -97,7 +97,7 @@ func (p *ProjectionPushDownRule) pushDown(plan logical_plan.ILogicPlan) error {
 	return nil
 }
 
-func (p *ProjectionPushDownRule) optimize(plan logical_plan.ILogicPlan) (logical_plan.ILogicPlan, error) {
+func (p *ProjectionPushDownRule) optimize(plan logical_plan.ILogicOperator) (logical_plan.ILogicOperator, error) {
 	err := p.extractColumn(plan)
 	if err != nil {
 		return nil, err
@@ -117,6 +117,6 @@ func NewPredictionPushDownRule() *PredictionPushDownRule {
 	return &PredictionPushDownRule{ExtractedExpr: nil}
 }
 
-func (p *PredictionPushDownRule) optimize(plan logical_plan.ILogicPlan) (logical_plan.ILogicPlan, error) {
+func (p *PredictionPushDownRule) optimize(plan logical_plan.ILogicOperator) (logical_plan.ILogicOperator, error) {
 	return nil, nil
 }

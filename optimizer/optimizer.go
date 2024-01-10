@@ -5,7 +5,7 @@ import (
 )
 
 type IOptimizer interface {
-	optimize(plan logical_plan.ILogicPlan) (logical_plan.ILogicPlan, error)
+	optimize(plan logical_plan.ILogicOperator) (logical_plan.ILogicOperator, error)
 }
 
 var (
@@ -18,7 +18,7 @@ func init() {
 	OptimizerRuls = append(OptimizerRuls, NewPredictionPushDownRule())
 }
 
-func Optimize(plan logical_plan.ILogicPlan) (logical_plan.ILogicPlan, error) {
+func Optimize(plan logical_plan.ILogicOperator) (logical_plan.ILogicOperator, error) {
 	optimizedPlan := plan
 	for _, rul := range OptimizerRuls {
 		optimizedPlan, _ = rul.optimize(optimizedPlan)

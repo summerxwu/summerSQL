@@ -6,11 +6,11 @@ import (
 )
 
 type Projector struct {
-	Projections []ILogicExpr `json:"expressions,omitempty"`
-	ChildPlan   []ILogicPlan `json:"childrens,omitempty"`
+	Projections []ILogicExpr     `json:"expressions,omitempty"`
+	ChildPlan   []ILogicOperator `json:"childrens,omitempty"`
 }
 
-func NewProjector(childPlan []ILogicPlan, projections []ILogicExpr) *Projector {
+func NewProjector(childPlan []ILogicOperator, projections []ILogicExpr) *Projector {
 	return &Projector{projections, childPlan}
 }
 
@@ -27,6 +27,6 @@ func (p *Projector) Schema() *catalog.TSchema {
 	return nil
 }
 
-func (p *Projector) Children() []ILogicPlan {
+func (p *Projector) Children() []ILogicOperator {
 	return p.ChildPlan
 }

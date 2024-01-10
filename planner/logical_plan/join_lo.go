@@ -16,12 +16,12 @@ const (
 )
 
 type Join struct {
-	ChildPlan  []ILogicPlan
+	ChildPlan  []ILogicOperator
 	Conditions []ILogicExpr
 	Type       JoinType
 }
 
-func NewJoinPlan(childPlan []ILogicPlan, cond []ILogicExpr, tp JoinType) *Join {
+func NewJoinPlan(childPlan []ILogicOperator, cond []ILogicExpr, tp JoinType) *Join {
 	return &Join{childPlan, cond, tp}
 }
 
@@ -29,7 +29,7 @@ func (j *Join) Schema() *catalog.TSchema {
 	return nil
 }
 
-func (j *Join) Children() []ILogicPlan {
+func (j *Join) Children() []ILogicOperator {
 	return j.ChildPlan
 }
 

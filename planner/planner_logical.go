@@ -6,8 +6,8 @@ import (
 )
 
 // createSelectLogicalPlan deal the normal SPJ query for now
-func createSelectLogicalPlan(selectStmt *ast.SelectStmt) logical_plan.ILogicPlan {
-	var plan logical_plan.ILogicPlan
+func createSelectLogicalPlan(selectStmt *ast.SelectStmt) logical_plan.ILogicOperator {
+	var plan logical_plan.ILogicOperator
 	// from clause
 	fromNode := selectStmt.From
 	if fromNode != nil && fromNode.TableRefs.Tp != 0 {
@@ -29,7 +29,7 @@ func createSelectLogicalPlan(selectStmt *ast.SelectStmt) logical_plan.ILogicPlan
 	return plan
 }
 
-func CreateLogicalPlan(stmt []ast.StmtNode) logical_plan.ILogicPlan {
+func CreateLogicalPlan(stmt []ast.StmtNode) logical_plan.ILogicOperator {
 	switch v := stmt[0].(type) {
 	case *ast.SelectStmt:
 		{

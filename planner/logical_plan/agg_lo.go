@@ -6,12 +6,12 @@ import (
 )
 
 type Aggregate struct {
-	ChildNodes ILogicPlan
+	ChildNodes ILogicOperator
 	Expr       []ILogicExpr
 	GroupExpr  []ILogicExpr
 }
 
-func NewAggregate(childNodes ILogicPlan, expr []ILogicExpr, groupExpr []ILogicExpr) *Aggregate {
+func NewAggregate(childNodes ILogicOperator, expr []ILogicExpr, groupExpr []ILogicExpr) *Aggregate {
 	return &Aggregate{ChildNodes: childNodes, Expr: expr, GroupExpr: groupExpr}
 }
 
@@ -20,8 +20,8 @@ func (a *Aggregate) Schema() *catalog.TSchema {
 	return nil
 }
 
-func (a *Aggregate) Children() []ILogicPlan {
-	cd := make([]ILogicPlan, 0)
+func (a *Aggregate) Children() []ILogicOperator {
+	cd := make([]ILogicOperator, 0)
 	cd = append(cd, a.ChildNodes)
 	return cd
 }

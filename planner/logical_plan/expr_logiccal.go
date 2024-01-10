@@ -1,24 +1,24 @@
 package logical_plan
 
 import (
-	"fmt"
-	"github.com/apache/arrow/go/v11/arrow"
 	"summerSQL/catalog"
 )
 
 type ILogicExpr interface {
 	// ReturnType get the value type which evaluated by current expression
 	// input is not required for some expression type
-	ReturnType(input ILogicPlan) catalog.IDataTypes
+	ReturnType(input ILogicOperator) catalog.IDataTypes
 	ToString() string
 }
+
+/*
 
 // ColumnExpr define the reference about a relation in query plan
 type ColumnExpr struct {
 	Name string
 }
 
-func (c *ColumnExpr) ReturnType(input ILogicPlan) catalog.IDataTypes {
+func (c *ColumnExpr) ReturnType(input ILogicOperator) catalog.IDataTypes {
 	for _, field := range input.Schema().Fields() {
 		if field.Name == c.Name {
 			return field.Type
@@ -34,7 +34,7 @@ type LiteralStringExpr struct {
 	Literal string
 }
 
-func (l *LiteralStringExpr) ReturnType(ILogicPlan) catalog.IDataTypes {
+func (l *LiteralStringExpr) ReturnType(ILogicOperator) catalog.IDataTypes {
 	return &arrow.StringType{}
 
 }
@@ -65,7 +65,7 @@ func NewBooleanBinaryExpr(name string, operator string, l ILogicExpr, r ILogicEx
 	}
 }
 
-func (b *BooleanBinaryExpr) ReturnType(ILogicPlan) catalog.IDataTypes {
+func (b *BooleanBinaryExpr) ReturnType(ILogicOperator) catalog.IDataTypes {
 	return &arrow.BooleanType{}
 }
 
@@ -88,7 +88,7 @@ func NewMathBinaryExpr(name string, operator string, l ILogicExpr, r ILogicExpr)
 	}
 }
 
-func (m *MathBinaryExpr) ReturnType(input ILogicPlan) catalog.IDataTypes {
+func (m *MathBinaryExpr) ReturnType(input ILogicOperator) catalog.IDataTypes {
 	return m.L.ReturnType(input)
 }
 
@@ -154,7 +154,7 @@ type AggregateExpr struct {
 	Expr ILogicExpr
 }
 
-func (a *AggregateExpr) ReturnType(input ILogicPlan) catalog.IDataTypes {
+func (a *AggregateExpr) ReturnType(input ILogicOperator) catalog.IDataTypes {
 	return a.Expr.ReturnType(input)
 }
 
@@ -179,6 +179,9 @@ type Count struct {
 	AggregateExpr
 }
 
-func (c *Count) ReturnType(ILogicPlan) catalog.IDataTypes {
+func (c *Count) ReturnType(ILogicOperator) catalog.IDataTypes {
 	return &arrow.Uint64Type{}
 }
+
+
+*/

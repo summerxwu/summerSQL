@@ -1,9 +1,8 @@
 package logical_plan
 
-import "summerSQL/catalog"
-
+/*
 type DataFrame struct {
-	Final_logicPlan ILogicPlan
+	Final_logicPlan ILogicOperator
 }
 
 func NewDataFrame() *DataFrame {
@@ -14,17 +13,17 @@ func (d *DataFrame) Projection(exprs []ILogicExpr) *DataFrame {
 	if d.Final_logicPlan == nil {
 		panic("missing input logic plan for projection")
 	}
-	input := make([]ILogicPlan, 0)
+	input := make([]ILogicOperator, 0)
 	input = append(input, d.Final_logicPlan)
 	d.Final_logicPlan = NewProjector(input, exprs)
 	return d
 }
 
-func (d *DataFrame) Filter(exprs ILogicExpr) *DataFrame {
+func (d *DataFrame) LogicalFilter(exprs ILogicExpr) *DataFrame {
 	if d.Final_logicPlan == nil {
-		panic("missing input logic plan for Filter")
+		panic("missing input logic plan for LogicalFilter")
 	}
-	input := make([]ILogicPlan, 0)
+	input := make([]ILogicOperator, 0)
 	input = append(input, d.Final_logicPlan)
 	d.Final_logicPlan = NewFilter(input, exprs)
 	return d
@@ -42,6 +41,7 @@ func (d *DataFrame) Schema() *catalog.TSchema {
 	return d.Final_logicPlan.Schema()
 }
 
-func (d *DataFrame) LogicPlan() ILogicPlan {
+func (d *DataFrame) LogicPlan() ILogicOperator {
 	return d.Final_logicPlan
 }
+*/

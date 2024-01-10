@@ -9,7 +9,7 @@ import (
 	logical_plan2 "summerSQL/planner/logical_plan"
 )
 
-func CreatePhysicalExpr(expr logical_plan2.ILogicExpr, input logical_plan2.ILogicPlan) (
+func CreatePhysicalExpr(expr logical_plan2.ILogicExpr, input logical_plan2.ILogicOperator) (
 	executor.IPhysicalExpr, error,
 ) {
 	switch v := expr.(type) {
@@ -68,9 +68,9 @@ func CreatePhysicalExpr(expr logical_plan2.ILogicExpr, input logical_plan2.ILogi
 	return nil, nil
 }
 
-func CreatePhysicalPlan(lPlan logical_plan2.ILogicPlan) (executor.IPhysicalPlan, error) {
+func CreatePhysicalPlan(lPlan logical_plan2.ILogicOperator) (executor.IPhysicalPlan, error) {
 	switch v := lPlan.(type) {
-	case *logical_plan2.Scan:
+	case *logical_plan2.LogicalScan:
 		{
 			result := executor.NewScanExec(v.DataSource, &v.Projection)
 			return result, nil
@@ -97,7 +97,7 @@ func CreatePhysicalPlan(lPlan logical_plan2.ILogicPlan) (executor.IPhysicalPlan,
 			}
 			return result, nil
 		}
-	case *logical_plan2.Filter:
+	case *logical_plan2.LogicalFilter:
 		{
 			input, err := CreatePhysicalPlan(v.ChildNodes)
 			if err != nil {

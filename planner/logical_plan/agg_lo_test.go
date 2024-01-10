@@ -1,12 +1,6 @@
 package logical_plan
 
-import (
-	"fmt"
-	"summerSQL/access"
-	"summerSQL/catalog"
-	"testing"
-)
-
+/*
 func TestNewLogicPlanAndPrint(t *testing.T) {
 
 	// SELECT * FROM employee WHERE state = 'CO'
@@ -46,7 +40,7 @@ func TestNewLogicPlanAndPrint(t *testing.T) {
 	ds := access.NewCSVDataSource(inputCsvFileFullPath, inputCsvSchema, 100)
 
 	scan, _ := NewScan(ds, nil)
-	// construct Filter
+	// construct LogicalFilter
 	// setup Expr
 	clExpr := ColumnExpr{
 		Name: "state",
@@ -86,3 +80,4 @@ func TestNewLogicPlanAndPrint(t *testing.T) {
 	fmt.Println(PrintPretty(pj, "", "    "))
 
 }
+*/

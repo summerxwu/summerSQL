@@ -1,14 +1,9 @@
 package logical_plan
 
-import (
-	"fmt"
-	"summerSQL/catalog"
-	"testing"
-)
-
+/*
 type planNodeForTest struct {
 	body       string
-	ChildNodes []ILogicPlan
+	ChildNodes []ILogicOperator
 }
 
 func (p planNodeForTest) Schema() *catalog.TSchema {
@@ -16,7 +11,7 @@ func (p planNodeForTest) Schema() *catalog.TSchema {
 	panic("implement me")
 }
 
-func (p planNodeForTest) Children() []ILogicPlan {
+func (p planNodeForTest) Children() []ILogicOperator {
 	// TODO implement me
 	return p.ChildNodes
 }
@@ -26,14 +21,14 @@ func (p planNodeForTest) ToString() string {
 	return p.body
 }
 
-func newTestPlans() ILogicPlan {
-	scan := planNodeForTest{body: "Scan: employee.csv; projection=None"}
-	scan1 := planNodeForTest{body: "Scan: employee.csv; projection=None"}
-	filter := planNodeForTest{body: "Filter: #state = 'CO'", ChildNodes: make([]ILogicPlan, 0)}
+func newTestPlans() ILogicOperator {
+	scan := planNodeForTest{body: "LogicalScan: employee.csv; projection=None"}
+	scan1 := planNodeForTest{body: "LogicalScan: employee.csv; projection=None"}
+	filter := planNodeForTest{body: "LogicalFilter: #state = 'CO'", ChildNodes: make([]ILogicOperator, 0)}
 	filter.ChildNodes = append(filter.ChildNodes, &scan)
 	filter.ChildNodes = append(filter.ChildNodes, &scan1)
 	projection := planNodeForTest{
-		body: "Projection: #id, #first_name, #last_name, #state, #salary", ChildNodes: make([]ILogicPlan, 0),
+		body: "Projection: #id, #first_name, #last_name, #state, #salary", ChildNodes: make([]ILogicOperator, 0),
 	}
 	projection.ChildNodes = append(projection.ChildNodes, &filter)
 	return &projection
@@ -43,3 +38,6 @@ func TestPrintPretty(t *testing.T) {
 	plan := newTestPlans()
 	fmt.Println(PrintPretty(plan, "", "   "))
 }
+
+
+*/

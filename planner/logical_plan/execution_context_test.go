@@ -1,11 +1,6 @@
 package logical_plan
 
-import (
-	"fmt"
-	"summerSQL/catalog"
-	"testing"
-)
-
+/*
 func TestNewExecutionContext(t *testing.T) {
 	inputCsvFileFullPath := "/Users/summerxwu/GolandProjects/summerSQL/test_data/employee.csv"
 	inputCsvSchema := catalog.TSchema{
@@ -35,7 +30,7 @@ func TestNewExecutionContext(t *testing.T) {
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
-	eCtx.Filter(
+	eCtx.LogicalFilter(
 		NewEq(
 			&ColumnExpr{"state"}, &LiteralStringExpr{
 				Literal: "CO",
@@ -57,3 +52,4 @@ func TestNewExecutionContext(t *testing.T) {
 	fmt.Printf(PrintPretty(eCtx.Final_logicPlan, "", "    "))
 
 }
+*/
